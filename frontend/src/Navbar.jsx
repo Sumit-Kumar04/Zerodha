@@ -6,8 +6,8 @@ export default function Navbar() {
      
         <nav class=" navbar navbar-expand-lg border-bottom fixed-top" style={{backgroundColor:'#fff'}}>
           <div class="container  ">
-            <div className="row">
-              <div className="col">
+            <div className="row p-2">
+              <div className="col ">
                      <Link class="navbar-brand" to="/">
               <img  style={{width:'25%'}}  src="media/images/logo.svg" alt="logo" />
             </Link>

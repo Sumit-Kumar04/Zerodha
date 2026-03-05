@@ -2,7 +2,7 @@ import React from'react';
 export default function Footer(){
     return(
         <>
-        <div className='border-top'></div>
+        <div className='border-top mt-5'></div>
         <div className="container mt-5 p-5 ">
             <div className="row ">
                 <div className="col">
