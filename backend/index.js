@@ -25,7 +25,12 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [,"http://localhost:5173","http://localhost:5174"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://zerodha-g3yh1238c-sumit-kumars-projects-cab992ba.vercel.app",
+      "https://zerodha-wf8b.vercel.app",
+    ],
     credentials: true,
   })
 );
