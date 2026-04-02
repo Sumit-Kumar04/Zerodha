@@ -9,6 +9,7 @@ export default function  Hero(){
                  <h1 >Zerodha Products </h1>
                  <p className='mt-3 fs-4'>Sleek, modern, and intuitive trading platforms</p>
 
+                
                 <p className='fs-5'>Check out our {" "} <Link style={{textDecoration:'None'}} to='/signup'>
                investments offerings  <i class="fa-solid fa-arrow-right"></i>
                  </Link> 

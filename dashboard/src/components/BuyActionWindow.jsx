@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
@@ -11,20 +10,28 @@ const BuyActionWindow = ({ uid }) => {
 
   const { closeBuyWindow } = useContext(GeneralContext);
 
-  const handleBuyClick = async () => {
-    try {
-      await axios.post("http://localhost:5000/newOrder", {
+const handleBuyClick = async () => {
+  try {
+    await axios.post(
+      "http://localhost:5000/newOrder",
+      {
         name: uid,
-        qty: stockQuantity,
-        price: stockPrice,
+        qty: Number(stockQuantity),
+        price: Number(stockPrice),
         mode: "BUY",
-      });
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
-      closeBuyWindow();
-    } catch (error) {
-      console.error("Error placing buy order:", error);
-    }
-  };
+    alert("Buy order placed successfully!");
+    closeBuyWindow();
+  } catch (error) {
+    console.error("Error placing buy order:", error.response?.data || error.message);
+    alert(error.response?.data?.message || "Please login first to place order.");
+  }
+};
 
   const handleCancelClick = () => {
     closeBuyWindow();
@@ -40,6 +47,7 @@ const BuyActionWindow = ({ uid }) => {
               type="number"
               name="qty"
               id="qty"
+              min="1"
               onChange={(e) => setStockQuantity(e.target.value)}
               value={stockQuantity}
             />
@@ -52,6 +60,7 @@ const BuyActionWindow = ({ uid }) => {
               name="price"
               id="price"
               step="0.05"
+              min="0"
               onChange={(e) => setStockPrice(e.target.value)}
               value={stockPrice}
             />

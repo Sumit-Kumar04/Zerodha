@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
+
 const { protect } = require("./middleware/authMiddleware");
 const { UserModel } = require("./model/UserModel");
 const { HoldingsModel } = require("./model/HoldingsModel");
@@ -24,7 +25,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite frontend
+    origin: [,"http://localhost:5173","http://localhost:5174"],
     credentials: true,
   })
 );
@@ -180,7 +181,8 @@ app.get("/allHoldings", async (req, res) => {
     const allHoldings = await HoldingsModel.find({});
     res.json(allHoldings);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error fetching holdings:", error);
+    res.status(500).json({ message: "Failed to fetch holdings" });
   }
 });
 
@@ -189,7 +191,8 @@ app.get("/allPositions", async (req, res) => {
     const allPositions = await PositionsModel.find({});
     res.json(allPositions);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error fetching positions:", error);
+    res.status(500).json({ message: "Failed to fetch positions" });
   }
 });
 
@@ -206,26 +209,86 @@ app.get("/orders", protect, async (req, res) => {
 // Protected: place new order
 app.post("/newOrder", protect, async (req, res) => {
   try {
+    const { name, qty, price, mode } = req.body;
+
     const newOrder = new OrdersModel({
-      name: req.body.name,
-      qty: req.body.qty,
-      price: req.body.price,
-      mode: req.body.mode,
-      user: req.user._id,
+      name,
+      qty,
+      price,
+      mode,
+      user: req.user._id, // 👈 current logged-in user
     });
 
     await newOrder.save();
 
     res.status(201).json({
       success: true,
-      message: "Order saved!",
+      message: "Order created successfully",
       order: newOrder,
     });
   } catch (error) {
+    console.error("Error creating order:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to save order",
+      message: "Failed to create order",
       error: error.message,
+    });
+  }
+});
+
+app.get("/allOrders", protect, async (req, res) => {
+  try {
+    const allOrders = await OrdersModel.find({ user: req.user._id }).sort({
+      createdAt: -1,
+    });
+
+    res.json(allOrders);
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch orders",
+      error: error.message,
+    });
+  }
+});
+
+app.get("/api/auth/me", protect, async (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      user: {
+        id: req.user._id,
+        fullName: req.user.fullName,
+        email: req.user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Error in /api/auth/me:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch current user",
+    });
+  }
+});
+
+app.post("/api/auth/logout", (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed",
     });
   }
 });
