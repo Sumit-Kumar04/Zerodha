@@ -1,9 +1,8 @@
-import React from "react";
-function App(){
+function Apps(){
   return(
-    <>
-    <h2>Dash</h2>
-    </>
+    <div>
+      <h2>Apps Page</h2>
+    </div>
   );
 }
-export default App;
+export default Apps;
