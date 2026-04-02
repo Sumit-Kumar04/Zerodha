@@ -27,7 +27,7 @@ const Menu = () => {
       );
 
       alert("Logged out successfully!");
-      window.location.href = `${API_URL}`; // auth / landing page
+      window.location.href = `${API_URL/api/auth/logout}`; // auth / landing page
     } catch (error) {
       console.error("Logout error:", error.response?.data || error.message);
       alert("Logout failed");

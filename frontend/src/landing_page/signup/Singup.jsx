@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
+const DASHBOARD_URL = import.meta.env.VITE_DASHBOARD_URL;
 
 const Signup = () => {
   const [isLoginMode, setIsLoginMode] = useState(false);
@@ -41,7 +43,7 @@ const Signup = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API_URL}/api/auth/register`,
         signupData,
         {
           withCredentials: true,
@@ -77,7 +79,7 @@ const Signup = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${API_URL}/api/auth/login`,
         loginData,
         {
           withCredentials: true,
@@ -88,7 +90,7 @@ const Signup = () => {
 
       // redirect to dashboard app
       setTimeout(() => {
-        window.location.href = "http://localhost:5174";
+        window.location.href = `${DASHBOARD_URL}`;
         // 👆 Change this to your dashboard URL
       }, 1000);
     } catch (err) {
