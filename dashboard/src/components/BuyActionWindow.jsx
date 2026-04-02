@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
@@ -13,7 +14,7 @@ const BuyActionWindow = ({ uid }) => {
 const handleBuyClick = async () => {
   try {
     await axios.post(
-      "http://localhost:5000/newOrder",
+     `${API_URL}/newOrder`,
       {
         name: uid,
         qty: Number(stockQuantity),

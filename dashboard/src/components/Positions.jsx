@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from "react";
 // import { positions } from "../data/data";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 const Positions = () => {
   const [allPositions,setallPositions]=useState([]);
   useEffect(()=>{
-    axios.get("http://localhost:5000/allPositions").then((res)=>{
+    axios.get(`${API_URL}/allPositions`).then((res)=>{
       console.log(res);
       setallPositions(res.data);
     })

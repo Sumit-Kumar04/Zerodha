@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
@@ -18,7 +19,7 @@ const Menu = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/logout",
+         `${API_URL}/api/auth/logout`,
         {},
         {
           withCredentials: true,
@@ -26,7 +27,7 @@ const Menu = () => {
       );
 
       alert("Logged out successfully!");
-      window.location.href = "http://localhost:5173"; // auth / landing page
+      window.location.href = `${API_URL}`; // auth / landing page
     } catch (error) {
       console.error("Logout error:", error.response?.data || error.message);
       alert("Logout failed");
@@ -35,7 +36,7 @@ const Menu = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/auth/me", {
+      .get( `${API_URL}/api/auth/me`, {
         withCredentials: true,
       })
       .then((res) => {
