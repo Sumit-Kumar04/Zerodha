@@ -90,7 +90,7 @@ const Signup = () => {
 
       // redirect to dashboard app
       setTimeout(() => {
-        window.location.href = `${DASHBOARD_URL}`;
+        window.location.href = DASHBOARD_URL;
         // 👆 Change this to your dashboard URL
       }, 1000);
     } catch (err) {
